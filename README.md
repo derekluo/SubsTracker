@@ -129,6 +129,14 @@ Fork仓库,然后点击自己仓库里的部署按钮，等待部署完成,**注
 ![image](https://github.com/user-attachments/assets/af530379-332c-4482-9e6e-229a9e24775e)
 
 
+## Local Development & Testing
+
+1. Install Wrangler: `npm install -g wrangler`
+2. Start local dev server: `npm run dev`
+3. Visit [http://localhost:8787](http://localhost:8787) in your browser.
+4. For a local health check and KV test, visit [http://localhost:8787/local-test](http://localhost:8787/local-test)
+5. The worker uses an in-memory KV store for local testing.
+
 ## 赞助
 本项目的 CDN 加速和安全保护由腾讯 EdgeOne 赞助。
 [Best Asian CDN, Edge, and Secure Solutions - Tencent EdgeOne](https://edgeone.ai/?from=github)

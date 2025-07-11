@@ -205,7 +205,7 @@ const loginPage = `
       <h1 class="text-2xl font-bold text-gray-800"><i class="fas fa-calendar-check mr-2"></i>订阅管理系统</h1>
       <p class="text-gray-600 mt-2">登录管理您的订阅提醒</p>
     </div>
-    
+
     <form id="loginForm" class="space-y-6">
       <div>
         <label for="username" class="block text-sm font-medium text-gray-700 mb-1">
@@ -214,7 +214,7 @@ const loginPage = `
         <input type="text" id="username" name="username" required
           class="input-field w-full px-4 py-3 rounded-lg text-gray-700 focus:outline-none">
       </div>
-      
+
       <div>
         <label for="password" class="block text-sm font-medium text-gray-700 mb-1">
           <i class="fas fa-lock mr-2"></i>密码
@@ -222,36 +222,36 @@ const loginPage = `
         <input type="password" id="password" name="password" required
           class="input-field w-full px-4 py-3 rounded-lg text-gray-700 focus:outline-none">
       </div>
-      
-      <button type="submit" 
+
+      <button type="submit"
         class="btn-primary w-full py-3 rounded-lg text-white font-medium focus:outline-none">
         <i class="fas fa-sign-in-alt mr-2"></i>登录
       </button>
-      
+
       <div id="errorMsg" class="text-red-500 text-center"></div>
     </form>
   </div>
-  
+
   <script>
     document.getElementById('loginForm').addEventListener('submit', async (e) => {
       e.preventDefault();
       const username = document.getElementById('username').value;
       const password = document.getElementById('password').value;
-      
+
       const button = e.target.querySelector('button');
       const originalContent = button.innerHTML;
       button.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>登录中...';
       button.disabled = true;
-      
+
       try {
         const response = await fetch('/api/login', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ username, password })
         });
-        
+
         const result = await response.json();
-        
+
         if (result.success) {
           window.location.href = '/admin';
         } else {
@@ -465,7 +465,7 @@ const adminPage = `
       .responsive-table td:last-of-type { border-bottom: none; }
       .responsive-table td:before { content: attr(data-label); font-weight: 600; text-align: left; padding-right: 1rem; color: #374151; white-space: nowrap; }
       .action-buttons-wrapper { display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: flex-end; }
-      
+
       .notes-container, .hover-container {
         max-width: 180px; /* Adjust for new layout */
         text-align: right;
@@ -519,7 +519,7 @@ const adminPage = `
       </div>
     </div>
   </nav>
-  
+
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
     <div class="flex justify-between items-center mb-6">
       <h2 class="text-2xl font-bold text-gray-800">订阅列表</h2>
@@ -533,7 +533,7 @@ const adminPage = `
         </button>
       </div>
     </div>
-    
+
     <div class="table-container bg-white rounded-lg overflow-hidden">
       <div class="overflow-x-auto">
         <table class="w-full divide-y divide-gray-200 responsive-table">
@@ -577,10 +577,10 @@ const adminPage = `
           </button>
         </div>
       </div>
-      
+
       <form id="subscriptionForm" class="p-6 space-y-6">
         <input type="hidden" id="subscriptionId">
-        
+
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
             <label for="name" class="block text-sm font-medium text-gray-700 mb-1">订阅名称 *</label>
@@ -588,7 +588,7 @@ const adminPage = `
               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
             <div class="error-message text-red-500"></div>
           </div>
-          
+
           <div>
             <label for="customType" class="block text-sm font-medium text-gray-700 mb-1">订阅类型</label>
             <input type="text" id="customType" placeholder="例如：流媒体、云服务、软件等"
@@ -596,7 +596,7 @@ const adminPage = `
             <div class="error-message text-red-500"></div>
           </div>
         </div>
-        
+
         <div class="mb-4">
           <label class="lunar-toggle">
             <input type="checkbox" id="showLunar" class="form-checkbox h-4 w-4 text-indigo-600">
@@ -612,14 +612,14 @@ const adminPage = `
             <div id="startDateLunar" class="lunar-display"></div>
             <div class="error-message text-red-500"></div>
           </div>
-          
+
           <div>
             <label for="periodValue" class="block text-sm font-medium text-gray-700 mb-1">周期数值 *</label>
             <input type="number" id="periodValue" min="1" value="1" required
               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
             <div class="error-message text-red-500"></div>
           </div>
-          
+
           <div>
             <label for="periodUnit" class="block text-sm font-medium text-gray-700 mb-1">周期单位 *</label>
             <select id="periodUnit" required
@@ -631,7 +631,7 @@ const adminPage = `
             <div class="error-message text-red-500"></div>
           </div>
         </div>
-        
+
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
             <label for="expiryDate" class="block text-sm font-medium text-gray-700 mb-1">到期日期 *</label>
@@ -640,15 +640,15 @@ const adminPage = `
             <div id="expiryDateLunar" class="lunar-display"></div>
             <div class="error-message text-red-500"></div>
           </div>
-          
+
           <div class="flex items-end">
-            <button type="button" id="calculateExpiryBtn" 
+            <button type="button" id="calculateExpiryBtn"
               class="btn-primary text-white px-4 py-2 rounded-md text-sm font-medium h-10">
               <i class="fas fa-calculator mr-2"></i>自动计算到期日期
             </button>
           </div>
         </div>
-        
+
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
             <label for="reminderDays" class="block text-sm font-medium text-gray-700 mb-1">提前提醒天数</label>
@@ -657,37 +657,37 @@ const adminPage = `
             <p class="text-xs text-gray-500 mt-1">0 = 仅到期日当天提醒，1+ = 提前N天开始提醒</p>
             <div class="error-message text-red-500"></div>
           </div>
-          
+
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-3">选项设置</label>
             <div class="space-y-2">
               <label class="inline-flex items-center">
-                <input type="checkbox" id="isActive" checked 
+                <input type="checkbox" id="isActive" checked
                   class="form-checkbox h-4 w-4 text-indigo-600 rounded border-gray-300 focus:ring-indigo-500">
                 <span class="ml-2 text-sm text-gray-700">启用订阅</span>
               </label>
               <label class="inline-flex items-center">
-                <input type="checkbox" id="autoRenew" checked 
+                <input type="checkbox" id="autoRenew" checked
                   class="form-checkbox h-4 w-4 text-indigo-600 rounded border-gray-300 focus:ring-indigo-500">
                 <span class="ml-2 text-sm text-gray-700">自动续订</span>
               </label>
             </div>
           </div>
         </div>
-        
+
         <div>
           <label for="notes" class="block text-sm font-medium text-gray-700 mb-1">备注</label>
           <textarea id="notes" rows="3" placeholder="可添加相关备注信息..."
             class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"></textarea>
           <div class="error-message text-red-500"></div>
         </div>
-        
+
         <div class="flex justify-end space-x-3 pt-4 border-t border-gray-200">
-          <button type="button" id="cancelBtn" 
+          <button type="button" id="cancelBtn"
             class="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50">
             取消
           </button>
-          <button type="submit" 
+          <button type="submit"
             class="btn-primary text-white px-4 py-2 rounded-md text-sm font-medium">
             <i class="fas fa-save mr-2"></i>保存
           </button>
@@ -912,13 +912,13 @@ const adminPage = `
       const container = document.getElementById('toast-container');
       const toast = document.createElement('div');
       toast.className = 'toast ' + type;
-      
+
       const icon = type === 'success' ? 'check-circle' :
                    type === 'error' ? 'exclamation-circle' :
                    type === 'warning' ? 'exclamation-triangle' : 'info-circle';
-      
+
       toast.innerHTML = '<div class="flex items-center"><i class="fas fa-' + icon + ' mr-2"></i><span>' + message + '</span></div>';
-      
+
       container.appendChild(toast);
       setTimeout(() => toast.classList.add('show'), 100);
       setTimeout(() => {
@@ -1014,25 +1014,25 @@ const adminPage = `
 
         const response = await fetch('/api/subscriptions');
         const data = await response.json();
-        
+
         tbody.innerHTML = '';
-        
+
         if (data.length === 0) {
           tbody.innerHTML = '<tr><td colspan="6" class="text-center py-4 text-gray-500">没有订阅数据</td></tr>';
           return;
         }
-        
+
         // 按到期时间升序排序（最早到期的在前）
         data.sort((a, b) => new Date(a.expiryDate) - new Date(b.expiryDate));
-        
+
         data.forEach(subscription => {
           const row = document.createElement('tr');
           row.className = subscription.isActive === false ? 'hover:bg-gray-50 bg-gray-100' : 'hover:bg-gray-50';
-          
+
           const expiryDate = new Date(subscription.expiryDate);
           const now = new Date();
           const daysDiff = Math.ceil((expiryDate - now) / (1000 * 60 * 60 * 24));
-          
+
           let statusHtml = '';
           if (!subscription.isActive) {
             statusHtml = '<span class="px-2 py-1 text-xs font-medium rounded-full text-white bg-gray-500"><i class="fas fa-pause-circle mr-1"></i>已停用</span>';
@@ -1043,17 +1043,17 @@ const adminPage = `
           } else {
             statusHtml = '<span class="px-2 py-1 text-xs font-medium rounded-full text-white bg-green-500"><i class="fas fa-check-circle mr-1"></i>正常</span>';
           }
-          
+
           let periodText = '';
           if (subscription.periodValue && subscription.periodUnit) {
             const unitMap = { day: '天', month: '月', year: '年' };
             periodText = subscription.periodValue + ' ' + (unitMap[subscription.periodUnit] || subscription.periodUnit);
           }
-          
-          const autoRenewIcon = subscription.autoRenew !== false ? 
-            '<i class="fas fa-sync-alt text-blue-500 ml-1" title="自动续订"></i>' : 
+
+          const autoRenewIcon = subscription.autoRenew !== false ?
+            '<i class="fas fa-sync-alt text-blue-500 ml-1" title="自动续订"></i>' :
             '<i class="fas fa-ban text-gray-400 ml-1" title="不自动续订"></i>';
-          
+
           // 检查是否显示农历
           const showLunar = document.getElementById('listShowLunar').checked;
           let lunarExpiryText = '';
@@ -1132,18 +1132,18 @@ const adminPage = `
                   '<button class="toggle-status btn-success text-white px-2 py-1 rounded text-xs whitespace-nowrap" data-id="' + subscription.id + '" data-action="activate"><i class="fas fa-play-circle mr-1"></i>启用</button>') +
               '</div>' +
             '</td>';
-          
+
           tbody.appendChild(row);
         });
-        
+
         document.querySelectorAll('.edit').forEach(button => {
           button.addEventListener('click', editSubscription);
         });
-        
+
         document.querySelectorAll('.delete').forEach(button => {
           button.addEventListener('click', deleteSubscription);
         });
-        
+
         document.querySelectorAll('.toggle-status').forEach(button => {
           button.addEventListener('click', toggleSubscriptionStatus);
         });
@@ -1248,7 +1248,7 @@ const adminPage = `
         showToast('加载订阅列表失败', 'error');
       }
     }
-    
+
     async function testSubscriptionNotification(e) {
         const button = e.target.tagName === 'BUTTON' ? e.target : e.target.parentElement;
         const id = button.dataset.id;
@@ -1272,24 +1272,24 @@ const adminPage = `
             button.disabled = false;
         }
     }
-    
+
     async function toggleSubscriptionStatus(e) {
       const id = e.target.dataset.id || e.target.parentElement.dataset.id;
       const action = e.target.dataset.action || e.target.parentElement.dataset.action;
       const isActivate = action === 'activate';
-      
+
       const button = e.target.tagName === 'BUTTON' ? e.target : e.target.parentElement;
       const originalContent = button.innerHTML;
       button.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>' + (isActivate ? '启用中...' : '停用中...');
       button.disabled = true;
-      
+
       try {
         const response = await fetch('/api/subscriptions/' + id + '/toggle-status', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ isActive: isActivate })
         });
-        
+
         if (response.ok) {
           showToast((isActivate ? '启用' : '停用') + '成功', 'success');
           loadSubscriptions();
@@ -1306,7 +1306,7 @@ const adminPage = `
         button.disabled = false;
       }
     }
-    
+
     document.getElementById('addSubscriptionBtn').addEventListener('click', () => {
       document.getElementById('modalTitle').textContent = '添加新订阅';
       document.getElementById('subscriptionModal').classList.remove('hidden');
@@ -1325,7 +1325,7 @@ const adminPage = `
       calculateExpiryDate();
       setupModalEventListeners();
     });
-    
+
     function setupModalEventListeners() {
       document.getElementById('calculateExpiryBtn').removeEventListener('click', calculateExpiryDate);
       document.getElementById('calculateExpiryBtn').addEventListener('click', calculateExpiryDate);
@@ -1350,7 +1350,7 @@ const adminPage = `
         document.getElementById('subscriptionModal').classList.add('hidden');
       });
     }
-    
+
     function calculateExpiryDate() {
       const startDate = document.getElementById('startDate').value;
       const periodValue = parseInt(document.getElementById('periodValue').value);
@@ -1377,25 +1377,25 @@ const adminPage = `
       updateLunarDisplay('startDate', 'startDateLunar');
       updateLunarDisplay('expiryDate', 'expiryDateLunar');
     }
-    
+
     document.getElementById('closeModal').addEventListener('click', () => {
       document.getElementById('subscriptionModal').classList.add('hidden');
     });
-    
+
     // 禁止点击弹窗外区域关闭弹窗，防止误操作丢失内容
     // document.getElementById('subscriptionModal').addEventListener('click', (event) => {
     //   if (event.target === document.getElementById('subscriptionModal')) {
     //     document.getElementById('subscriptionModal').classList.add('hidden');
     //   }
     // });
-    
+
     document.getElementById('subscriptionForm').addEventListener('submit', async (e) => {
       e.preventDefault();
-      
+
       if (!validateForm()) {
         return;
       }
-      
+
       const id = document.getElementById('subscriptionId').value;
       const subscription = {
         name: document.getElementById('name').value.trim(),
@@ -1409,24 +1409,24 @@ const adminPage = `
         periodUnit: document.getElementById('periodUnit').value,
         reminderDays: parseInt(document.getElementById('reminderDays').value) || 0
       };
-      
+
       const submitButton = e.target.querySelector('button[type="submit"]');
       const originalContent = submitButton.innerHTML;
       submitButton.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>' + (id ? '更新中...' : '保存中...');
       submitButton.disabled = true;
-      
+
       try {
         const url = id ? '/api/subscriptions/' + id : '/api/subscriptions';
         const method = id ? 'PUT' : 'POST';
-        
+
         const response = await fetch(url, {
           method: method,
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(subscription)
         });
-        
+
         const result = await response.json();
-        
+
         if (result.success) {
           showToast((id ? '更新' : '添加') + '订阅成功', 'success');
           document.getElementById('subscriptionModal').classList.add('hidden');
@@ -1442,14 +1442,14 @@ const adminPage = `
         submitButton.disabled = false;
       }
     });
-    
+
     async function editSubscription(e) {
       const id = e.target.dataset.id || e.target.parentElement.dataset.id;
-      
+
       try {
         const response = await fetch('/api/subscriptions/' + id);
         const subscription = await response.json();
-        
+
         if (subscription) {
           document.getElementById('modalTitle').textContent = '编辑订阅';
           document.getElementById('subscriptionId').value = subscription.id;
@@ -1463,7 +1463,7 @@ const adminPage = `
           document.getElementById('periodValue').value = subscription.periodValue || 1;
           document.getElementById('periodUnit').value = subscription.periodUnit || 'month';
           document.getElementById('reminderDays').value = subscription.reminderDays !== undefined ? subscription.reminderDays : 7;
-          
+
           clearFieldErrors();
           loadLunarPreference();
           document.getElementById('subscriptionModal').classList.remove('hidden');
@@ -1480,24 +1480,24 @@ const adminPage = `
         showToast('获取订阅信息失败', 'error');
       }
     }
-    
+
     async function deleteSubscription(e) {
       const id = e.target.dataset.id || e.target.parentElement.dataset.id;
-      
+
       if (!confirm('确定要删除这个订阅吗？此操作不可恢复。')) {
         return;
       }
-      
+
       const button = e.target.tagName === 'BUTTON' ? e.target : e.target.parentElement;
       const originalContent = button.innerHTML;
       button.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>删除中...';
       button.disabled = true;
-      
+
       try {
         const response = await fetch('/api/subscriptions/' + id, {
           method: 'DELETE'
         });
-        
+
         if (response.ok) {
           showToast('删除成功', 'success');
           loadSubscriptions();
@@ -1514,7 +1514,7 @@ const adminPage = `
         button.disabled = false;
       }
     }
-    
+
     window.addEventListener('load', loadSubscriptions);
   </script>
 </body>
@@ -1535,7 +1535,7 @@ const configPage = `
     .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); }
     .btn-secondary { background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%); transition: all 0.3s; }
     .btn-secondary:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); }
-    
+
     .toast {
       position: fixed; top: 20px; right: 20px; padding: 12px 20px; border-radius: 8px;
       color: white; font-weight: 500; z-index: 1000; transform: translateX(400px);
@@ -1546,20 +1546,20 @@ const configPage = `
     .toast.error { background-color: #ef4444; }
     .toast.info { background-color: #3b82f6; }
     .toast.warning { background-color: #f59e0b; }
-    
-    .config-section { 
-      border: 1px solid #e5e7eb; 
-      border-radius: 8px; 
-      padding: 16px; 
-      margin-bottom: 24px; 
+
+    .config-section {
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 24px;
     }
-    .config-section.active { 
-      background-color: #f8fafc; 
-      border-color: #6366f1; 
+    .config-section.active {
+      background-color: #f8fafc;
+      border-color: #6366f1;
     }
-    .config-section.inactive { 
-      background-color: #f9fafb; 
-      opacity: 0.7; 
+    .config-section.inactive {
+      background-color: #f9fafb;
+      opacity: 0.7;
     }
   </style>
 </head>
@@ -1587,11 +1587,11 @@ const configPage = `
       </div>
     </div>
   </nav>
-  
+
   <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
     <div class="bg-white rounded-lg shadow-md p-6">
       <h2 class="text-2xl font-bold text-gray-800 mb-6">系统配置</h2>
-      
+
       <form id="configForm" class="space-y-8">
         <div class="border-b border-gray-200 pb-6">
           <h3 class="text-lg font-medium text-gray-900 mb-4">管理员账户</h3>
@@ -1607,7 +1607,7 @@ const configPage = `
             </div>
           </div>
         </div>
-        
+
         <div class="border-b border-gray-200 pb-6">
           <h3 class="text-lg font-medium text-gray-900 mb-4">显示设置</h3>
           <div class="mb-6">
@@ -1660,7 +1660,7 @@ const configPage = `
               </a>
             </div>
           </div>
-          
+
           <div id="telegramConfig" class="config-section">
             <h4 class="text-md font-medium text-gray-900 mb-3">Telegram 配置</h4>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
@@ -1679,7 +1679,7 @@ const configPage = `
               </button>
             </div>
           </div>
-          
+
           <div id="notifyxConfig" class="config-section">
             <h4 class="text-md font-medium text-gray-900 mb-3">NotifyX 配置</h4>
             <div class="mb-4">
@@ -1810,13 +1810,13 @@ const configPage = `
       const container = document.getElementById('toast-container');
       const toast = document.createElement('div');
       toast.className = 'toast ' + type;
-      
+
       const icon = type === 'success' ? 'check-circle' :
                    type === 'error' ? 'exclamation-circle' :
                    type === 'warning' ? 'exclamation-triangle' : 'info-circle';
-      
+
       toast.innerHTML = '<div class="flex items-center"><i class="fas fa-' + icon + ' mr-2"></i><span>' + message + '</span></div>';
-      
+
       container.appendChild(toast);
       setTimeout(() => toast.classList.add('show'), 100);
       setTimeout(() => {
@@ -1866,7 +1866,7 @@ const configPage = `
         showToast('加载配置失败，请刷新页面重试', 'error');
       }
     }
-    
+
     function toggleNotificationConfigs(enabledNotifiers) {
       const telegramConfig = document.getElementById('telegramConfig');
       const notifyxConfig = document.getElementById('notifyxConfig');
@@ -1908,7 +1908,7 @@ const configPage = `
         toggleNotificationConfigs(enabledNotifiers);
       });
     });
-    
+
     document.getElementById('configForm').addEventListener('submit', async (e) => {
       e.preventDefault();
 
@@ -1974,7 +1974,7 @@ const configPage = `
         submitButton.disabled = false;
       }
     });
-    
+
     async function testNotification(type) {
       const buttonId = type === 'telegram' ? 'testTelegramBtn' :
                       type === 'notifyx' ? 'testNotifyXBtn' :
@@ -2070,11 +2070,11 @@ const configPage = `
         button.disabled = false;
       }
     }
-    
+
     document.getElementById('testTelegramBtn').addEventListener('click', () => {
       testNotification('telegram');
     });
-    
+
     document.getElementById('testNotifyXBtn').addEventListener('click', () => {
       testNotification('notifyx');
     });
@@ -3387,6 +3387,16 @@ export default {
           headers: { 'Content-Type': 'text/plain; charset=utf-8' }
         });
       }
+    }
+
+    // 本地测试健康检查和KV测试
+    if (url.pathname === '/local-test') {
+      if (env && env.SUBSCRIPTIONS_KV) {
+        await env.SUBSCRIPTIONS_KV.put('test-key', 'test-value');
+        const value = await env.SUBSCRIPTIONS_KV.get('test-key');
+        return new Response('Local test OK: ' + value, { status: 200 });
+      }
+      return new Response('KV not available', { status: 500 });
     }
 
     if (url.pathname.startsWith('/api')) {

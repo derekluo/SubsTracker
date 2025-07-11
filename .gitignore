@@ -1,0 +1,38 @@
+# Node
+node_modules/
+
+# Local env
+.env
+.env.*
+
+# VSCode
+.vscode/
+
+# Mac system files
+.DS_Store
+
+# Log files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Test/coverage
+coverage/
+
+# Wrangler
+wrangler.log
+
+# Cursor/IDE
+.cursorindexingignore
+
+# Misc
+*.local
+*.swp
+
+# Build output (if any)
+dist/
+build/
+
+# Specstory (if not tracked)
+.specstory/ 
+.wrangler/
