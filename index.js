@@ -168,80 +168,472 @@ const loginPage = `
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>订阅管理系统</title>
+  <title>订阅管理系统 - 登录</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
   <style>
-    .login-container {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    :root {
+      --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      --secondary-gradient: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+      --glass-bg: rgba(255, 255, 255, 0.25);
+      --glass-border: rgba(255, 255, 255, 0.18);
+    }
+
+    body {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #667eea 100%);
+      background-size: 400% 400%;
+      animation: gradientShift 15s ease infinite;
       min-height: 100vh;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     }
-    .login-box {
-      backdrop-filter: blur(8px);
-      background-color: rgba(255, 255, 255, 0.9);
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
     }
-    .btn-primary {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      transition: all 0.3s;
+
+    .login-container {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      position: relative;
+      overflow: hidden;
     }
-    .btn-primary:hover {
+
+    .login-container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Ccircle cx='30' cy='30' r='4'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      animation: float 20s linear infinite;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0px) translateX(0px); }
+      33% { transform: translateY(-10px) translateX(5px); }
+      66% { transform: translateY(5px) translateX(-5px); }
+      100% { transform: translateY(0px) translateX(0px); }
+    }
+
+    .glass-card {
+      backdrop-filter: blur(20px);
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: 24px;
+      box-shadow: 
+        0 8px 32px rgba(31, 38, 135, 0.37),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+      padding: 3rem;
+      width: 100%;
+      max-width: 450px;
+      position: relative;
+      overflow: hidden;
+      transform: translateY(20px);
+      opacity: 0;
+      animation: slideInUp 0.8s ease forwards;
+    }
+
+    @keyframes slideInUp {
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    .glass-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--primary-gradient);
+      opacity: 0.8;
+    }
+
+    .logo-container {
+      text-align: center;
+      margin-bottom: 2.5rem;
+      animation: fadeInDown 1s ease 0.3s both;
+    }
+
+    @keyframes fadeInDown {
+      from {
+        opacity: 0;
+        transform: translateY(-30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .logo-icon {
+      width: 80px;
+      height: 80px;
+      border-radius: 20px;
+      background: var(--primary-gradient);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+      animation: pulse 2s ease-in-out infinite alternate;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      100% { transform: scale(1.05); }
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+      animation: fadeInUp 0.6s ease forwards;
+      opacity: 0;
+    }
+
+    .form-group:nth-child(1) { animation-delay: 0.4s; }
+    .form-group:nth-child(2) { animation-delay: 0.5s; }
+    .form-group:nth-child(3) { animation-delay: 0.6s; }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .form-label {
+      display: block;
+      color: white;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      font-size: 0.875rem;
+    }
+
+    .input-container {
+      position: relative;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 1rem 1rem 1rem 3rem;
+      background: rgba(255, 255, 255, 0.1);
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      border-radius: 12px;
+      color: white;
+      font-size: 1rem;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      backdrop-filter: blur(10px);
+    }
+
+    .form-input::placeholder {
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: rgba(255, 255, 255, 0.5);
+      background: rgba(255, 255, 255, 0.15);
+      box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
       transform: translateY(-2px);
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
     }
-    .input-field {
-      transition: all 0.3s;
-      border: 1px solid #e2e8f0;
+
+    .input-icon {
+      position: absolute;
+      left: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 1.1rem;
+      pointer-events: none;
+      transition: color 0.3s ease;
     }
-    .input-field:focus {
-      border-color: #667eea;
-      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.25);
+
+    .form-input:focus + .input-icon {
+      color: white;
+    }
+
+    .login-button {
+      width: 100%;
+      padding: 1rem 1.5rem;
+      background: var(--primary-gradient);
+      border: none;
+      border-radius: 12px;
+      color: white;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+    }
+
+    .login-button::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: left 0.5s;
+    }
+
+    .login-button:hover::before {
+      left: 100%;
+    }
+
+    .login-button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 30px rgba(102, 126, 234, 0.5);
+    }
+
+    .login-button:active {
+      transform: translateY(-1px);
+    }
+
+    .login-button:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .error-message {
+      background: rgba(239, 68, 68, 0.2);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      border-radius: 8px;
+      padding: 0.75rem 1rem;
+      color: #fecaca;
+      font-size: 0.875rem;
+      margin-top: 1rem;
+      opacity: 0;
+      transform: translateY(-10px);
+      transition: all 0.3s ease;
+      backdrop-filter: blur(10px);
+    }
+
+    .error-message.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .floating-shapes {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .shape {
+      position: absolute;
+      opacity: 0.1;
+      animation: floatAround 15s linear infinite;
+    }
+
+    .shape:nth-child(1) {
+      top: 20%;
+      left: 10%;
+      animation-delay: 0s;
+      animation-duration: 20s;
+    }
+
+    .shape:nth-child(2) {
+      top: 60%;
+      right: 10%;
+      animation-delay: 5s;
+      animation-duration: 25s;
+    }
+
+    .shape:nth-child(3) {
+      bottom: 20%;
+      left: 20%;
+      animation-delay: 10s;
+      animation-duration: 18s;
+    }
+
+    @keyframes floatAround {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      25% { transform: translateY(-20px) rotate(90deg); }
+      50% { transform: translateY(-10px) rotate(180deg); }
+      75% { transform: translateY(-30px) rotate(270deg); }
+    }
+
+    .footer-text {
+      text-align: center;
+      margin-top: 2rem;
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 0.875rem;
+      animation: fadeIn 1s ease 1s both;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    /* Mobile responsiveness */
+    @media (max-width: 640px) {
+      .login-container {
+        padding: 1rem;
+      }
+      
+      .glass-card {
+        padding: 2rem;
+        margin: 1rem;
+      }
+      
+      .logo-icon {
+        width: 60px;
+        height: 60px;
+        font-size: 2rem;
+      }
+    }
+
+    /* Loading spinner */
+    .spinner {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      border-top-color: white;
+      animation: spin 1s ease-in-out infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
     }
   </style>
 </head>
-<body class="login-container flex items-center justify-center">
-  <div class="login-box p-8 rounded-xl w-full max-w-md">
-    <div class="text-center mb-8">
-      <h1 class="text-2xl font-bold text-gray-800"><i class="fas fa-calendar-check mr-2"></i>订阅管理系统</h1>
-      <p class="text-gray-600 mt-2">登录管理您的订阅提醒</p>
+<body>
+  <div class="login-container">
+    <!-- Floating background shapes -->
+    <div class="floating-shapes">
+      <div class="shape">
+        <i class="fas fa-calendar-alt text-6xl"></i>
+      </div>
+      <div class="shape">
+        <i class="fas fa-bell text-5xl"></i>
+      </div>
+      <div class="shape">
+        <i class="fas fa-clock text-4xl"></i>
+      </div>
     </div>
 
-    <form id="loginForm" class="space-y-6">
-      <div>
-        <label for="username" class="block text-sm font-medium text-gray-700 mb-1">
-          <i class="fas fa-user mr-2"></i>用户名
-        </label>
-        <input type="text" id="username" name="username" required
-          class="input-field w-full px-4 py-3 rounded-lg text-gray-700 focus:outline-none">
+    <div class="glass-card">
+      <!-- Logo and title -->
+      <div class="logo-container">
+        <div class="logo-icon">
+          <i class="fas fa-calendar-check"></i>
+        </div>
+        <h1 class="text-2xl font-bold text-white mb-2">订阅管理系统</h1>
+        <p class="text-white text-opacity-80">安全登录管理您的订阅提醒</p>
       </div>
 
-      <div>
-        <label for="password" class="block text-sm font-medium text-gray-700 mb-1">
-          <i class="fas fa-lock mr-2"></i>密码
-        </label>
-        <input type="password" id="password" name="password" required
-          class="input-field w-full px-4 py-3 rounded-lg text-gray-700 focus:outline-none">
+      <!-- Login form -->
+      <form id="loginForm" class="space-y-6">
+        <div class="form-group">
+          <label for="username" class="form-label">
+            <i class="fas fa-user mr-2"></i>用户名
+          </label>
+          <div class="input-container">
+            <input 
+              type="text" 
+              id="username" 
+              name="username" 
+              required
+              class="form-input"
+              placeholder="请输入用户名"
+              autocomplete="username"
+            >
+            <i class="fas fa-user input-icon"></i>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="password" class="form-label">
+            <i class="fas fa-lock mr-2"></i>密码
+          </label>
+          <div class="input-container">
+            <input 
+              type="password" 
+              id="password" 
+              name="password" 
+              required
+              class="form-input"
+              placeholder="请输入密码"
+              autocomplete="current-password"
+            >
+            <i class="fas fa-lock input-icon"></i>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <button type="submit" class="login-button">
+            <span id="loginButtonText">
+              <i class="fas fa-sign-in-alt mr-2"></i>安全登录
+            </span>
+          </button>
+        </div>
+
+        <div id="errorMsg" class="error-message">
+          <i class="fas fa-exclamation-circle mr-2"></i>
+          <span id="errorText"></span>
+        </div>
+      </form>
+
+      <div class="footer-text">
+        <i class="fas fa-shield-alt mr-1"></i>
+        您的数据安全受到保护
       </div>
-
-      <button type="submit"
-        class="btn-primary w-full py-3 rounded-lg text-white font-medium focus:outline-none">
-        <i class="fas fa-sign-in-alt mr-2"></i>登录
-      </button>
-
-      <div id="errorMsg" class="text-red-500 text-center"></div>
-    </form>
+    </div>
   </div>
 
   <script>
+    // Add stagger animation to form elements
+    document.addEventListener('DOMContentLoaded', function() {
+      const formGroups = document.querySelectorAll('.form-group');
+      formGroups.forEach((group, index) => {
+        group.style.animationDelay = (0.4 + index * 0.1) + 's';
+      });
+    });
+
+    // Enhanced form submission with better UX
     document.getElementById('loginForm').addEventListener('submit', async (e) => {
       e.preventDefault();
-      const username = document.getElementById('username').value;
+      
+      const username = document.getElementById('username').value.trim();
       const password = document.getElementById('password').value;
+      const submitButton = e.target.querySelector('button[type="submit"]');
+      const buttonText = document.getElementById('loginButtonText');
+      const errorMsg = document.getElementById('errorMsg');
+      const errorText = document.getElementById('errorText');
 
-      const button = e.target.querySelector('button');
-      const originalContent = button.innerHTML;
-      button.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>登录中...';
-      button.disabled = true;
+      // Validation
+      if (!username || !password) {
+        showError('请填写完整的登录信息');
+        return;
+      }
+
+      // Loading state
+      submitButton.disabled = true;
+      buttonText.innerHTML = '<div class="spinner"></div><span class="ml-2">登录中...</span>';
+      hideError();
 
       try {
         const response = await fetch('/api/login', {
@@ -253,17 +645,86 @@ const loginPage = `
         const result = await response.json();
 
         if (result.success) {
-          window.location.href = '/admin';
+          buttonText.innerHTML = '<i class="fas fa-check-circle mr-2"></i>登录成功';
+          submitButton.style.background = 'linear-gradient(135deg, #10b981 0%, #059669 100%)';
+          
+          // Smooth transition to admin page
+          setTimeout(() => {
+            window.location.href = '/admin';
+          }, 800);
         } else {
-          document.getElementById('errorMsg').textContent = result.message || '用户名或密码错误';
-          button.innerHTML = originalContent;
-          button.disabled = false;
+          showError(result.message || '用户名或密码错误');
+          resetButton();
         }
       } catch (error) {
-        document.getElementById('errorMsg').textContent = '发生错误，请稍后再试';
-        button.innerHTML = originalContent;
-        button.disabled = false;
+        console.error('Login error:', error);
+        showError('网络连接错误，请稍后再试');
+        resetButton();
       }
+    });
+
+    function showError(message) {
+      const errorMsg = document.getElementById('errorMsg');
+      const errorText = document.getElementById('errorText');
+      
+      errorText.textContent = message;
+      errorMsg.classList.add('show');
+      
+      // Shake animation for input fields
+      const inputs = document.querySelectorAll('.form-input');
+      inputs.forEach(input => {
+        input.style.animation = 'shake 0.5s ease-in-out';
+        setTimeout(() => {
+          input.style.animation = '';
+        }, 500);
+      });
+    }
+
+    function hideError() {
+      const errorMsg = document.getElementById('errorMsg');
+      errorMsg.classList.remove('show');
+    }
+
+    function resetButton() {
+      const submitButton = document.querySelector('button[type="submit"]');
+      const buttonText = document.getElementById('loginButtonText');
+      
+      setTimeout(() => {
+        submitButton.disabled = false;
+        buttonText.innerHTML = '<i class="fas fa-sign-in-alt mr-2"></i>安全登录';
+        submitButton.style.background = '';
+      }, 1000);
+    }
+
+    // Add shake animation
+    const style = document.createElement('style');
+    style.textContent = '' +
+      '@keyframes shake {' +
+        '0%, 100% { transform: translateX(0); }' +
+        '25% { transform: translateX(-5px); }' +
+        '75% { transform: translateX(5px); }' +
+      '}';
+    document.head.appendChild(style);
+
+    // Enhanced keyboard navigation
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        const form = document.getElementById('loginForm');
+        if (document.activeElement.tagName === 'INPUT') {
+          const inputs = Array.from(form.querySelectorAll('input'));
+          const currentIndex = inputs.indexOf(document.activeElement);
+          
+          if (currentIndex < inputs.length - 1) {
+            e.preventDefault();
+            inputs[currentIndex + 1].focus();
+          }
+        }
+      }
+    });
+
+    // Auto-focus first input
+    window.addEventListener('load', () => {
+      document.getElementById('username').focus();
     });
   </script>
 </body>
@@ -276,25 +737,305 @@ const adminPage = `
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>订阅管理系统</title>
+  <title>订阅管理系统 - 管理面板</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
   <style>
-    .btn-primary { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); transition: all 0.3s; }
-    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); }
-    .btn-danger { background: linear-gradient(135deg, #f87171 0%, #dc2626 100%); transition: all 0.3s; }
-    .btn-danger:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); }
-    .btn-success { background: linear-gradient(135deg, #34d399 0%, #059669 100%); transition: all 0.3s; }
-    .btn-success:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); }
-    .btn-warning { background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%); transition: all 0.3s; }
-    .btn-warning:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); }
-    .btn-info { background: linear-gradient(135deg, #3b82f6 0%, #60a5fa 100%); transition: all 0.3s; }
-    .btn-info:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); }
-    .table-container { box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); }
-    .modal-container { backdrop-filter: blur(8px); }
-    .readonly-input { background-color: #f8fafc; border-color: #e2e8f0; cursor: not-allowed; }
-    .error-message { font-size: 0.875rem; margin-top: 0.25rem; display: none; }
+    :root {
+      --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      --success-gradient: linear-gradient(135deg, #34d399 0%, #059669 100%);
+      --warning-gradient: linear-gradient(135deg, #fbbf24 0%, #d97706 100%);
+      --danger-gradient: linear-gradient(135deg, #f87171 0%, #dc2626 100%);
+      --info-gradient: linear-gradient(135deg, #3b82f6 0%, #60a5fa 100%);
+      --glass-bg: rgba(255, 255, 255, 0.95);
+      --glass-border: rgba(255, 255, 255, 0.2);
+    }
+
+    body {
+      background: linear-gradient(135deg, #f6f9fc 0%, #e9ecef 100%);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    .btn-primary { 
+      background: var(--primary-gradient); 
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      border: none;
+      color: white;
+      font-weight: 500;
+      box-shadow: 0 4px 14px rgba(102, 126, 234, 0.25);
+    }
+    .btn-primary:hover { 
+      transform: translateY(-2px); 
+      box-shadow: 0 8px 25px rgba(102, 126, 234, 0.35);
+    }
+    .btn-danger { 
+      background: var(--danger-gradient); 
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      border: none;
+      color: white;
+      font-weight: 500;
+      box-shadow: 0 4px 14px rgba(248, 113, 113, 0.25);
+    }
+    .btn-danger:hover { 
+      transform: translateY(-2px); 
+      box-shadow: 0 8px 25px rgba(248, 113, 113, 0.35);
+    }
+    .btn-success { 
+      background: var(--success-gradient); 
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      border: none;
+      color: white;
+      font-weight: 500;
+      box-shadow: 0 4px 14px rgba(52, 211, 153, 0.25);
+    }
+    .btn-success:hover { 
+      transform: translateY(-2px); 
+      box-shadow: 0 8px 25px rgba(52, 211, 153, 0.35);
+    }
+    .btn-warning { 
+      background: var(--warning-gradient); 
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      border: none;
+      color: white;
+      font-weight: 500;
+      box-shadow: 0 4px 14px rgba(251, 191, 36, 0.25);
+    }
+    .btn-warning:hover { 
+      transform: translateY(-2px); 
+      box-shadow: 0 8px 25px rgba(251, 191, 36, 0.35);
+    }
+    .btn-info { 
+      background: var(--info-gradient); 
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      border: none;
+      color: white;
+      font-weight: 500;
+      box-shadow: 0 4px 14px rgba(59, 130, 246, 0.25);
+    }
+    .btn-info:hover { 
+      transform: translateY(-2px); 
+      box-shadow: 0 8px 25px rgba(59, 130, 246, 0.35);
+    }
+
+    .modern-card {
+      background: var(--glass-bg);
+      backdrop-filter: blur(10px);
+      border-radius: 16px;
+      border: 1px solid var(--glass-border);
+      box-shadow: 
+        0 4px 6px -1px rgba(0, 0, 0, 0.1), 
+        0 2px 4px -1px rgba(0, 0, 0, 0.06),
+        0 0 0 1px rgba(255, 255, 255, 0.5);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .modern-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 
+        0 10px 25px -3px rgba(0, 0, 0, 0.1), 
+        0 4px 6px -2px rgba(0, 0, 0, 0.05),
+        0 0 0 1px rgba(255, 255, 255, 0.6);
+    }
+
+    .table-container { 
+      background: white;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 
+        0 4px 6px -1px rgba(0, 0, 0, 0.1), 
+        0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      border: 1px solid #f1f5f9;
+    }
+    
+    .modal-container { 
+      backdrop-filter: blur(12px); 
+      background: rgba(0, 0, 0, 0.5);
+    }
+    
+    .readonly-input { 
+      background-color: #f8fafc; 
+      border-color: #e2e8f0; 
+      cursor: not-allowed; 
+      opacity: 0.7;
+    }
+    
+    .error-message { 
+      font-size: 0.875rem; 
+      margin-top: 0.25rem; 
+      display: none; 
+      color: #ef4444;
+      background: #fef2f2;
+      border: 1px solid #fecaca;
+      border-radius: 6px;
+      padding: 0.5rem;
+    }
     .error-message.show { display: block; }
+
+    .header-gradient {
+      background: var(--primary-gradient);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .header-gradient::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Ccircle cx='30' cy='30' r='4'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      animation: float 20s linear infinite;
+    }
+
+    @keyframes float {
+      0% { transform: translateX(0px); }
+      50% { transform: translateX(20px); }
+      100% { transform: translateX(0px); }
+    }
+
+    .nav-link {
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .nav-link::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: left 0.5s;
+    }
+
+    .nav-link:hover::before {
+      left: 100%;
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.25rem 0.75rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+    }
+
+    .status-active { background: #dcfce7; color: #166534; }
+    .status-warning { background: #fef3c7; color: #92400e; }
+    .status-danger { background: #fee2e2; color: #991b1b; }
+    .status-inactive { background: #f3f4f6; color: #374151; }
+
+    .data-row {
+      transition: all 0.2s ease;
+      border-bottom: 1px solid #f1f5f9;
+    }
+
+    .data-row:hover {
+      background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+      transform: scale(1.01);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+
+    .action-button {
+      padding: 0.375rem 0.75rem;
+      border-radius: 8px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      transition: all 0.2s ease;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    .floating-action {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: var(--primary-gradient);
+      color: white;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 4px 20px rgba(102, 126, 234, 0.4);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+    }
+
+    .floating-action:hover {
+      transform: scale(1.1);
+      box-shadow: 0 6px 25px rgba(102, 126, 234, 0.5);
+    }
+
+    .stats-card {
+      background: white;
+      border-radius: 12px;
+      padding: 1.5rem;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      border: 1px solid #f1f5f9;
+      transition: all 0.3s ease;
+    }
+
+    .stats-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .stats-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      color: white;
+      margin-bottom: 1rem;
+    }
+
+    .search-container {
+      position: relative;
+      max-width: 400px;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 0.75rem 1rem 0.75rem 2.5rem;
+      border: 2px solid #e5e7eb;
+      border-radius: 12px;
+      background: white;
+      transition: all 0.3s ease;
+      font-size: 0.875rem;
+    }
+
+    .search-input:focus {
+      outline: none;
+      border-color: #6366f1;
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 0.75rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #9ca3af;
+      font-size: 1rem;
+    }
 
     /* 通用悬浮提示优化 */
     .hover-container {
@@ -498,22 +1239,24 @@ const adminPage = `
 <body class="bg-gray-100 min-h-screen">
   <div id="toast-container"></div>
 
-  <nav class="bg-white shadow-md">
+  <nav class="header-gradient shadow-lg relative z-10">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex justify-between h-16">
         <div class="flex items-center">
-          <i class="fas fa-calendar-check text-indigo-600 text-2xl mr-2"></i>
-          <span class="font-bold text-xl text-gray-800">订阅管理系统</span>
+          <div class="stats-icon" style="background: rgba(255, 255, 255, 0.2); margin-bottom: 0; margin-right: 1rem; width: 40px; height: 40px;">
+            <i class="fas fa-calendar-check"></i>
+          </div>
+          <span class="font-bold text-xl text-white">订阅管理系统</span>
         </div>
-        <div class="flex items-center space-x-4">
-          <a href="/admin" class="text-indigo-600 border-b-2 border-indigo-600 px-3 py-2 rounded-md text-sm font-medium">
-            <i class="fas fa-list mr-1"></i>订阅列表
+        <div class="flex items-center space-x-1">
+          <a href="/admin" class="nav-link bg-white bg-opacity-20 text-white px-4 py-2 rounded-lg text-sm font-medium">
+            <i class="fas fa-list mr-2"></i>订阅列表
           </a>
-          <a href="/admin/config" class="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">
-            <i class="fas fa-cog mr-1"></i>系统配置
+          <a href="/admin/config" class="nav-link text-white hover:bg-white hover:bg-opacity-20 px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200">
+            <i class="fas fa-cog mr-2"></i>系统配置
           </a>
-          <a href="/api/logout" class="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">
-            <i class="fas fa-sign-out-alt mr-1"></i>退出登录
+          <a href="/api/logout" class="nav-link text-white hover:bg-red-500 hover:bg-opacity-50 px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200">
+            <i class="fas fa-sign-out-alt mr-2"></i>退出登录
           </a>
         </div>
       </div>
@@ -521,49 +1264,128 @@ const adminPage = `
   </nav>
 
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-    <div class="flex justify-between items-center mb-6">
-      <h2 class="text-2xl font-bold text-gray-800">订阅列表</h2>
-      <div class="flex items-center space-x-4">
-        <label class="lunar-toggle">
-          <input type="checkbox" id="listShowLunar" class="form-checkbox h-4 w-4 text-indigo-600">
-          <span class="text-gray-700">显示农历</span>
-        </label>
-        <button id="addSubscriptionBtn" class="btn-primary text-white px-4 py-2 rounded-md text-sm font-medium flex items-center">
-          <i class="fas fa-plus mr-2"></i>添加新订阅
-        </button>
+    <!-- Statistics Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8" id="statsContainer">
+      <div class="stats-card">
+        <div class="stats-icon" style="background: var(--primary-gradient);">
+          <i class="fas fa-calendar-check"></i>
+        </div>
+        <div class="text-2xl font-bold text-gray-900" id="totalCount">0</div>
+        <div class="text-sm text-gray-600">总订阅数</div>
+      </div>
+      <div class="stats-card">
+        <div class="stats-icon" style="background: var(--success-gradient);">
+          <i class="fas fa-check-circle"></i>
+        </div>
+        <div class="text-2xl font-bold text-green-600" id="activeCount">0</div>
+        <div class="text-sm text-gray-600">正常订阅</div>
+      </div>
+      <div class="stats-card">
+        <div class="stats-icon" style="background: var(--warning-gradient);">
+          <i class="fas fa-exclamation-triangle"></i>
+        </div>
+        <div class="text-2xl font-bold text-yellow-600" id="warningCount">0</div>
+        <div class="text-sm text-gray-600">即将到期</div>
+      </div>
+      <div class="stats-card">
+        <div class="stats-icon" style="background: var(--danger-gradient);">
+          <i class="fas fa-times-circle"></i>
+        </div>
+        <div class="text-2xl font-bold text-red-600" id="expiredCount">0</div>
+        <div class="text-sm text-gray-600">已过期</div>
       </div>
     </div>
 
-    <div class="table-container bg-white rounded-lg overflow-hidden">
+    <!-- Header Section -->
+    <div class="modern-card p-6 mb-6">
+      <div class="flex flex-col lg:flex-row lg:justify-between lg:items-center gap-4">
+        <div>
+          <h1 class="text-3xl font-bold text-gray-900 mb-2">订阅管理</h1>
+          <p class="text-gray-600">管理您的所有订阅服务，跟踪到期时间</p>
+        </div>
+        
+        <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
+          <!-- Search -->
+          <div class="search-container">
+            <input 
+              type="text" 
+              id="searchInput" 
+              placeholder="搜索订阅名称或类型..." 
+              class="search-input"
+            >
+            <i class="fas fa-search search-icon"></i>
+          </div>
+          
+          <!-- Controls -->
+          <div class="flex items-center gap-4">
+            <label class="lunar-toggle flex items-center">
+              <input type="checkbox" id="listShowLunar" class="form-checkbox h-4 w-4 text-indigo-600 rounded">
+              <span class="text-gray-700 ml-2 text-sm">显示农历</span>
+            </label>
+            
+            <button id="addSubscriptionBtn" class="btn-primary px-6 py-2 rounded-lg text-sm font-medium flex items-center">
+              <i class="fas fa-plus mr-2"></i>添加订阅
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Data Table -->
+    <div class="table-container">
       <div class="overflow-x-auto">
-        <table class="w-full divide-y divide-gray-200 responsive-table">
-          <thead class="bg-gray-50">
+        <table class="w-full responsive-table">
+          <thead class="bg-gradient-to-r from-gray-50 to-gray-100">
             <tr>
-              <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" style="width: 25%;">
-                名称
+              <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider" style="width: 25%;">
+                <div class="flex items-center">
+                  <i class="fas fa-bookmark mr-2 text-indigo-500"></i>
+                  订阅名称
+                </div>
               </th>
-              <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" style="width: 15%;">
-                类型
+              <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider" style="width: 15%;">
+                <div class="flex items-center">
+                  <i class="fas fa-tag mr-2 text-indigo-500"></i>
+                  类型
+                </div>
               </th>
-              <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" style="width: 20%;">
-                到期时间 <i class="fas fa-sort-up ml-1 text-indigo-500" title="按到期时间升序排列"></i>
+              <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider" style="width: 20%;">
+                <div class="flex items-center">
+                  <i class="fas fa-calendar-alt mr-2 text-indigo-500"></i>
+                  到期时间
+                  <i class="fas fa-sort-up ml-2 text-indigo-400" title="按到期时间升序排列"></i>
+                </div>
               </th>
-              <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" style="width: 15%;">
-                提醒设置
+              <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider" style="width: 15%;">
+                <div class="flex items-center">
+                  <i class="fas fa-bell mr-2 text-indigo-500"></i>
+                  提醒设置
+                </div>
               </th>
-              <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" style="width: 10%;">
-                状态
+              <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider" style="width: 10%;">
+                <div class="flex items-center">
+                  <i class="fas fa-info-circle mr-2 text-indigo-500"></i>
+                  状态
+                </div>
               </th>
-              <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" style="width: 15%;">
-                操作
+              <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider" style="width: 15%;">
+                <div class="flex items-center">
+                  <i class="fas fa-cog mr-2 text-indigo-500"></i>
+                  操作
+                </div>
               </th>
             </tr>
           </thead>
-        <tbody id="subscriptionsBody" class="bg-white divide-y divide-gray-200">
-        </tbody>
+          <tbody id="subscriptionsBody" class="bg-white">
+          </tbody>
         </table>
       </div>
     </div>
+
+    <!-- Floating Action Button -->
+    <button id="floatingAddBtn" class="floating-action" title="添加新订阅">
+      <i class="fas fa-plus"></i>
+    </button>
   </div>
 
   <!-- 添加/编辑订阅的模态框 -->
@@ -997,257 +1819,7 @@ const adminPage = `
       '</div>';
     }
 
-    // 获取所有订阅并按到期时间排序
-    async function loadSubscriptions() {
-      try {
-        // 加载农历显示偏好
-        const listShowLunar = document.getElementById('listShowLunar');
-        const saved = localStorage.getItem('showLunar');
-        if (saved !== null) {
-          listShowLunar.checked = saved === 'true';
-        } else {
-          listShowLunar.checked = true; // 默认显示
-        }
-
-        const tbody = document.getElementById('subscriptionsBody');
-        tbody.innerHTML = '<tr><td colspan="6" class="text-center py-4"><i class="fas fa-spinner fa-spin mr-2"></i>加载中...</td></tr>';
-
-        const response = await fetch('/api/subscriptions');
-        const data = await response.json();
-
-        tbody.innerHTML = '';
-
-        if (data.length === 0) {
-          tbody.innerHTML = '<tr><td colspan="6" class="text-center py-4 text-gray-500">没有订阅数据</td></tr>';
-          return;
-        }
-
-        // 按到期时间升序排序（最早到期的在前）
-        data.sort((a, b) => new Date(a.expiryDate) - new Date(b.expiryDate));
-
-        data.forEach(subscription => {
-          const row = document.createElement('tr');
-          row.className = subscription.isActive === false ? 'hover:bg-gray-50 bg-gray-100' : 'hover:bg-gray-50';
-
-          const expiryDate = new Date(subscription.expiryDate);
-          const now = new Date();
-          const daysDiff = Math.ceil((expiryDate - now) / (1000 * 60 * 60 * 24));
-
-          let statusHtml = '';
-          if (!subscription.isActive) {
-            statusHtml = '<span class="px-2 py-1 text-xs font-medium rounded-full text-white bg-gray-500"><i class="fas fa-pause-circle mr-1"></i>已停用</span>';
-          } else if (daysDiff < 0) {
-            statusHtml = '<span class="px-2 py-1 text-xs font-medium rounded-full text-white bg-red-500"><i class="fas fa-exclamation-circle mr-1"></i>已过期</span>';
-          } else if (daysDiff <= (subscription.reminderDays || 7)) {
-            statusHtml = '<span class="px-2 py-1 text-xs font-medium rounded-full text-white bg-yellow-500"><i class="fas fa-exclamation-triangle mr-1"></i>即将到期</span>';
-          } else {
-            statusHtml = '<span class="px-2 py-1 text-xs font-medium rounded-full text-white bg-green-500"><i class="fas fa-check-circle mr-1"></i>正常</span>';
-          }
-
-          let periodText = '';
-          if (subscription.periodValue && subscription.periodUnit) {
-            const unitMap = { day: '天', month: '月', year: '年' };
-            periodText = subscription.periodValue + ' ' + (unitMap[subscription.periodUnit] || subscription.periodUnit);
-          }
-
-          const autoRenewIcon = subscription.autoRenew !== false ?
-            '<i class="fas fa-sync-alt text-blue-500 ml-1" title="自动续订"></i>' :
-            '<i class="fas fa-ban text-gray-400 ml-1" title="不自动续订"></i>';
-
-          // 检查是否显示农历
-          const showLunar = document.getElementById('listShowLunar').checked;
-          let lunarExpiryText = '';
-          let startLunarText = '';
-
-          if (showLunar) {
-            // 计算农历日期
-            const expiryDateObj = new Date(subscription.expiryDate);
-            const lunarExpiry = lunarCalendar.solar2lunar(expiryDateObj.getFullYear(), expiryDateObj.getMonth() + 1, expiryDateObj.getDate());
-            lunarExpiryText = lunarExpiry ? lunarExpiry.fullStr : '';
-
-            if (subscription.startDate) {
-              const startDateObj = new Date(subscription.startDate);
-              const lunarStart = lunarCalendar.solar2lunar(startDateObj.getFullYear(), startDateObj.getMonth() + 1, startDateObj.getDate());
-              startLunarText = lunarStart ? lunarStart.fullStr : '';
-            }
-          }
-
-          // 处理备注显示
-          let notesHtml = '';
-          if (subscription.notes) {
-            const notes = subscription.notes;
-            if (notes.length > 50) {
-              const truncatedNotes = notes.substring(0, 50) + '...';
-              notesHtml = '<div class="notes-container">' +
-                '<div class="notes-text text-xs text-gray-500" data-full-notes="' + notes.replace(/"/g, '&quot;') + '">' +
-                  truncatedNotes +
-                '</div>' +
-                '<div class="notes-tooltip"></div>' +
-              '</div>';
-            } else {
-              notesHtml = '<div class="text-xs text-gray-500">' + notes + '</div>';
-            }
-          }
-
-          // 生成各列内容
-          const nameHtml = createHoverText(subscription.name, 20, 'text-sm font-medium text-gray-900');
-          const typeHtml = createHoverText((subscription.customType || '其他'), 15, 'text-sm text-gray-900');
-          const periodHtml = periodText ? createHoverText('周期: ' + periodText, 20, 'text-xs text-gray-500 mt-1') : '';
-
-          // 到期时间相关信息
-          const expiryDateText = formatBeijingTime(new Date(subscription.expiryDate), 'date');
-          const lunarHtml = lunarExpiryText ? createHoverText('农历: ' + lunarExpiryText, 25, 'text-xs text-blue-600 mt-1') : '';
-          const daysLeftText = daysDiff < 0 ? '已过期' + Math.abs(daysDiff) + '天' : '还剩' + daysDiff + '天';
-          const startDateText = subscription.startDate ?
-            '开始: ' + formatBeijingTime(new Date(subscription.startDate), 'date') + (startLunarText ? ' (' + startLunarText + ')' : '') : '';
-          const startDateHtml = startDateText ? createHoverText(startDateText, 30, 'text-xs text-gray-500 mt-1') : '';
-
-          row.innerHTML =
-            '<td data-label="名称" class="px-4 py-3"><div class="td-content-wrapper">' +
-              nameHtml +
-              notesHtml +
-            '</div></td>' +
-            '<td data-label="类型" class="px-4 py-3"><div class="td-content-wrapper">' +
-              '<div class="flex items-center"><i class="fas fa-tag mr-1"></i><span>' + typeHtml + '</span></div>' +
-              (periodHtml ? '<div class="flex items-center">' + periodHtml + autoRenewIcon + '</div>' : '') +
-            '</div></td>' +
-            '<td data-label="到期时间" class="px-4 py-3"><div class="td-content-wrapper">' +
-              '<div class="text-sm text-gray-900">' + expiryDateText + '</div>' +
-              lunarHtml +
-              '<div class="text-xs text-gray-500 mt-1">' + daysLeftText + '</div>' +
-              startDateHtml +
-            '</div></td>' +
-            '<td data-label="提醒设置" class="px-4 py-3"><div class="td-content-wrapper">' +
-              '<div><i class="fas fa-bell mr-1"></i>提前' + (subscription.reminderDays || 0) + '天</div>' +
-              (subscription.reminderDays === 0 ? '<div class="text-xs text-gray-500 mt-1">仅到期日提醒</div>' : '') +
-            '</div></td>' +
-            '<td data-label="状态" class="px-4 py-3"><div class="td-content-wrapper">' + statusHtml + '</div></td>' +
-            '<td data-label="操作" class="px-4 py-3">' +
-              '<div class="action-buttons-wrapper">' +
-                '<button class="edit btn-primary text-white px-2 py-1 rounded text-xs whitespace-nowrap" data-id="' + subscription.id + '"><i class="fas fa-edit mr-1"></i>编辑</button>' +
-                '<button class="test-notify btn-info text-white px-2 py-1 rounded text-xs whitespace-nowrap" data-id="' + subscription.id + '"><i class="fas fa-paper-plane mr-1"></i>测试</button>' +
-                '<button class="delete btn-danger text-white px-2 py-1 rounded text-xs whitespace-nowrap" data-id="' + subscription.id + '"><i class="fas fa-trash-alt mr-1"></i>删除</button>' +
-                (subscription.isActive ?
-                  '<button class="toggle-status btn-warning text-white px-2 py-1 rounded text-xs whitespace-nowrap" data-id="' + subscription.id + '" data-action="deactivate"><i class="fas fa-pause-circle mr-1"></i>停用</button>' :
-                  '<button class="toggle-status btn-success text-white px-2 py-1 rounded text-xs whitespace-nowrap" data-id="' + subscription.id + '" data-action="activate"><i class="fas fa-play-circle mr-1"></i>启用</button>') +
-              '</div>' +
-            '</td>';
-
-          tbody.appendChild(row);
-        });
-
-        document.querySelectorAll('.edit').forEach(button => {
-          button.addEventListener('click', editSubscription);
-        });
-
-        document.querySelectorAll('.delete').forEach(button => {
-          button.addEventListener('click', deleteSubscription);
-        });
-
-        document.querySelectorAll('.toggle-status').forEach(button => {
-          button.addEventListener('click', toggleSubscriptionStatus);
-        });
-
-        document.querySelectorAll('.test-notify').forEach(button => {
-          button.addEventListener('click', testSubscriptionNotification);
-        });
-
-        // 添加悬停功能
-        function addHoverListeners() {
-          // 计算悬浮提示位置
-          function positionTooltip(element, tooltip) {
-            const rect = element.getBoundingClientRect();
-            const tooltipHeight = 100; // 预估高度
-            const viewportHeight = window.innerHeight;
-            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-
-            let top = rect.bottom + scrollTop + 8;
-            let left = rect.left;
-
-            // 如果下方空间不够，显示在上方
-            if (rect.bottom + tooltipHeight > viewportHeight) {
-              top = rect.top + scrollTop - tooltipHeight - 8;
-              tooltip.style.transform = 'translateY(10px)';
-              // 调整箭头位置
-              tooltip.classList.add('tooltip-above');
-            } else {
-              tooltip.style.transform = 'translateY(-10px)';
-              tooltip.classList.remove('tooltip-above');
-            }
-
-            // 确保不超出右边界
-            const maxLeft = window.innerWidth - 320 - 20;
-            if (left > maxLeft) {
-              left = maxLeft;
-            }
-
-            tooltip.style.left = left + 'px';
-            tooltip.style.top = top + 'px';
-          }
-
-          // 备注悬停功能
-          document.querySelectorAll('.notes-text').forEach(notesElement => {
-            const fullNotes = notesElement.getAttribute('data-full-notes');
-            const tooltip = notesElement.parentElement.querySelector('.notes-tooltip');
-
-            if (fullNotes && tooltip) {
-              notesElement.addEventListener('mouseenter', () => {
-                tooltip.textContent = fullNotes;
-                positionTooltip(notesElement, tooltip);
-                tooltip.classList.add('show');
-              });
-
-              notesElement.addEventListener('mouseleave', () => {
-                tooltip.classList.remove('show');
-              });
-
-              // 滚动时隐藏提示
-              window.addEventListener('scroll', () => {
-                if (tooltip.classList.contains('show')) {
-                  tooltip.classList.remove('show');
-                }
-              }, { passive: true });
-            }
-          });
-
-          // 通用悬停功能
-          document.querySelectorAll('.hover-text').forEach(hoverElement => {
-            const fullText = hoverElement.getAttribute('data-full-text');
-            const tooltip = hoverElement.parentElement.querySelector('.hover-tooltip');
-
-            if (fullText && tooltip) {
-              hoverElement.addEventListener('mouseenter', () => {
-                tooltip.textContent = fullText;
-                positionTooltip(hoverElement, tooltip);
-                tooltip.classList.add('show');
-              });
-
-              hoverElement.addEventListener('mouseleave', () => {
-                tooltip.classList.remove('show');
-              });
-
-              // 滚动时隐藏提示
-              window.addEventListener('scroll', () => {
-                if (tooltip.classList.contains('show')) {
-                  tooltip.classList.remove('show');
-                }
-              }, { passive: true });
-            }
-          });
-        }
-
-        addHoverListeners();
-
-        // 添加农历开关事件监听
-        listShowLunar.removeEventListener('change', handleListLunarToggle);
-        listShowLunar.addEventListener('change', handleListLunarToggle);
-      } catch (error) {
-        console.error('加载订阅失败:', error);
-        const tbody = document.getElementById('subscriptionsBody');
-        tbody.innerHTML = '<tr><td colspan="6" class="text-center py-4 text-red-500"><i class="fas fa-exclamation-circle mr-2"></i>加载失败，请刷新页面重试</td></tr>';
-        showToast('加载订阅列表失败', 'error');
-      }
-    }
+    // 旧的loadSubscriptions函数已删除，使用新的增强版本
 
     async function testSubscriptionNotification(e) {
         const button = e.target.tagName === 'BUTTON' ? e.target : e.target.parentElement;
@@ -1515,7 +2087,389 @@ const adminPage = `
       }
     }
 
-    window.addEventListener('load', loadSubscriptions);
+    // Enhanced search functionality
+    let allSubscriptions = [];
+    let filteredSubscriptions = [];
+
+    function setupSearch() {
+      const searchInput = document.getElementById('searchInput');
+      if (searchInput) {
+        searchInput.addEventListener('input', (e) => {
+          const query = e.target.value.toLowerCase().trim();
+          filterSubscriptions(query);
+        });
+      }
+    }
+
+    function filterSubscriptions(query) {
+      if (!query) {
+        filteredSubscriptions = [...allSubscriptions];
+      } else {
+        filteredSubscriptions = allSubscriptions.filter(sub => 
+          sub.name.toLowerCase().includes(query) ||
+          (sub.customType && sub.customType.toLowerCase().includes(query)) ||
+          (sub.notes && sub.notes.toLowerCase().includes(query))
+        );
+      }
+      displaySubscriptions(filteredSubscriptions);
+      updateStatistics(filteredSubscriptions);
+    }
+
+    function updateStatistics(subscriptions = allSubscriptions) {
+      const now = new Date();
+      let totalCount = subscriptions.length;
+      let activeCount = 0;
+      let warningCount = 0;
+      let expiredCount = 0;
+
+      subscriptions.forEach(subscription => {
+        if (subscription.isActive === false) return;
+
+        const expiryDate = new Date(subscription.expiryDate);
+        const daysDiff = Math.ceil((expiryDate - now) / (1000 * 60 * 60 * 24));
+        const reminderDays = subscription.reminderDays !== undefined ? subscription.reminderDays : 7;
+
+        if (daysDiff < 0) {
+          expiredCount++;
+        } else if (daysDiff <= reminderDays) {
+          warningCount++;
+        } else {
+          activeCount++;
+        }
+      });
+
+      // Animate count updates
+      animateCountUpdate('totalCount', totalCount);
+      animateCountUpdate('activeCount', activeCount);
+      animateCountUpdate('warningCount', warningCount);
+      animateCountUpdate('expiredCount', expiredCount);
+    }
+
+    function animateCountUpdate(elementId, targetValue) {
+      const element = document.getElementById(elementId);
+      if (!element) return;
+
+      const currentValue = parseInt(element.textContent) || 0;
+      const increment = targetValue > currentValue ? 1 : -1;
+      let currentCount = currentValue;
+
+      const animation = setInterval(() => {
+        if (currentCount === targetValue) {
+          clearInterval(animation);
+          return;
+        }
+        currentCount += increment;
+        element.textContent = currentCount;
+      }, 30);
+    }
+
+    function displaySubscriptions(subscriptions) {
+      const tbody = document.getElementById('subscriptionsBody');
+      if (!tbody) return;
+
+      tbody.innerHTML = '';
+
+      if (subscriptions.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="6" class="text-center py-12 text-gray-500"><div><i class="fas fa-inbox text-4xl mb-4 text-gray-300"></i><p class="text-lg">没有找到匹配的订阅</p><p class="text-sm">尝试调整搜索条件或添加新订阅</p></div></td></tr>';
+        return;
+      }
+
+      // Sort by expiry date
+      subscriptions.sort((a, b) => new Date(a.expiryDate) - new Date(b.expiryDate));
+
+      subscriptions.forEach((subscription, index) => {
+        const row = document.createElement('tr');
+        row.className = 'data-row ' + (subscription.isActive === false ? 'opacity-60' : '');
+        row.style.animationDelay = (index * 0.05) + 's';
+
+        const expiryDate = new Date(subscription.expiryDate);
+        const now = new Date();
+        const daysDiff = Math.ceil((expiryDate - now) / (1000 * 60 * 60 * 24));
+
+        let statusHtml = '';
+        if (!subscription.isActive) {
+          statusHtml = '<span class="status-badge status-inactive"><i class="fas fa-pause-circle mr-1"></i>已停用</span>';
+        } else if (daysDiff < 0) {
+          statusHtml = '<span class="status-badge status-danger"><i class="fas fa-exclamation-circle mr-1"></i>已过期</span>';
+        } else if (daysDiff <= (subscription.reminderDays || 7)) {
+          statusHtml = '<span class="status-badge status-warning"><i class="fas fa-exclamation-triangle mr-1"></i>即将到期</span>';
+        } else {
+          statusHtml = '<span class="status-badge status-active"><i class="fas fa-check-circle mr-1"></i>正常</span>';
+        }
+
+        let periodText = '';
+        if (subscription.periodValue && subscription.periodUnit) {
+          const unitMap = { day: '天', month: '月', year: '年' };
+          periodText = subscription.periodValue + ' ' + (unitMap[subscription.periodUnit] || subscription.periodUnit);
+        }
+
+        const autoRenewIcon = subscription.autoRenew !== false ?
+          '<i class="fas fa-sync-alt text-blue-500 ml-1" title="自动续订"></i>' :
+          '<i class="fas fa-ban text-gray-400 ml-1" title="不自动续订"></i>';
+
+        // Check if showing lunar calendar
+        const showLunar = document.getElementById('listShowLunar').checked;
+        let lunarExpiryText = '';
+        let startLunarText = '';
+
+        if (showLunar) {
+          const expiryDateObj = new Date(subscription.expiryDate);
+          const lunarExpiry = lunarCalendar.solar2lunar(expiryDateObj.getFullYear(), expiryDateObj.getMonth() + 1, expiryDateObj.getDate());
+          lunarExpiryText = lunarExpiry ? lunarExpiry.fullStr : '';
+
+          if (subscription.startDate) {
+            const startDateObj = new Date(subscription.startDate);
+            const lunarStart = lunarCalendar.solar2lunar(startDateObj.getFullYear(), startDateObj.getMonth() + 1, startDateObj.getDate());
+            startLunarText = lunarStart ? lunarStart.fullStr : '';
+          }
+        }
+
+        // Handle notes display
+        let notesHtml = '';
+        if (subscription.notes) {
+          const notes = subscription.notes;
+          if (notes.length > 50) {
+            const truncatedNotes = notes.substring(0, 50) + '...';
+            notesHtml = '<div class="notes-container">' +
+              '<div class="notes-text text-xs text-gray-500 mt-1" data-full-notes="' + notes.replace(/"/g, '&quot;') + '">' +
+                truncatedNotes +
+              '</div>' +
+              '<div class="notes-tooltip"></div>' +
+            '</div>';
+          } else {
+            notesHtml = '<div class="text-xs text-gray-500 mt-1">' + notes + '</div>';
+          }
+        }
+
+        const nameHtml = createHoverText(subscription.name, 20, 'text-sm font-medium text-gray-900');
+        const typeHtml = createHoverText((subscription.customType || '其他'), 15, 'text-sm text-gray-900');
+        const periodHtml = periodText ? createHoverText('周期: ' + periodText, 20, 'text-xs text-gray-500 mt-1') : '';
+
+        const expiryDateText = formatBeijingTime(new Date(subscription.expiryDate), 'date');
+        const lunarHtml = lunarExpiryText ? createHoverText('农历: ' + lunarExpiryText, 25, 'text-xs text-blue-600 mt-1') : '';
+        const daysLeftText = daysDiff < 0 ? '已过期' + Math.abs(daysDiff) + '天' : '还剩' + daysDiff + '天';
+        const startDateText = subscription.startDate ?
+          '开始: ' + formatBeijingTime(new Date(subscription.startDate), 'date') + (startLunarText ? ' (' + startLunarText + ')' : '') : '';
+        const startDateHtml = startDateText ? createHoverText(startDateText, 30, 'text-xs text-gray-500 mt-1') : '';
+
+        row.innerHTML =
+          '<td data-label="订阅名称" class="px-6 py-4"><div class="td-content-wrapper">' +
+            nameHtml +
+            notesHtml +
+          '</div></td>' +
+          '<td data-label="类型" class="px-6 py-4"><div class="td-content-wrapper">' +
+            '<div class="flex items-center"><i class="fas fa-tag mr-2 text-gray-400"></i><span>' + typeHtml + '</span></div>' +
+            (periodHtml ? '<div class="flex items-center mt-1">' + periodHtml + autoRenewIcon + '</div>' : '') +
+          '</div></td>' +
+          '<td data-label="到期时间" class="px-6 py-4"><div class="td-content-wrapper">' +
+            '<div class="text-sm text-gray-900 font-medium">' + expiryDateText + '</div>' +
+            lunarHtml +
+            '<div class="text-xs text-gray-500 mt-1">' + daysLeftText + '</div>' +
+            startDateHtml +
+          '</div></td>' +
+          '<td data-label="提醒设置" class="px-6 py-4"><div class="td-content-wrapper">' +
+            '<div class="flex items-center"><i class="fas fa-bell mr-2 text-gray-400"></i>提前' + (subscription.reminderDays || 0) + '天</div>' +
+            (subscription.reminderDays === 0 ? '<div class="text-xs text-gray-500 mt-1">仅到期日提醒</div>' : '') +
+          '</div></td>' +
+          '<td data-label="状态" class="px-6 py-4"><div class="td-content-wrapper">' + statusHtml + '</div></td>' +
+          '<td data-label="操作" class="px-6 py-4">' +
+            '<div class="action-buttons-wrapper flex flex-wrap gap-1">' +
+              '<button class="edit action-button btn-primary" data-id="' + subscription.id + '"><i class="fas fa-edit"></i></button>' +
+              '<button class="test-notify action-button btn-info" data-id="' + subscription.id + '"><i class="fas fa-paper-plane"></i></button>' +
+              '<button class="delete action-button btn-danger" data-id="' + subscription.id + '"><i class="fas fa-trash-alt"></i></button>' +
+              (subscription.isActive ?
+                '<button class="toggle-status action-button btn-warning" data-id="' + subscription.id + '" data-action="deactivate" title="停用"><i class="fas fa-pause-circle"></i></button>' :
+                '<button class="toggle-status action-button btn-success" data-id="' + subscription.id + '" data-action="activate" title="启用"><i class="fas fa-play-circle"></i></button>') +
+            '</div>' +
+          '</td>';
+
+        tbody.appendChild(row);
+      });
+
+      // Add event listeners
+      document.querySelectorAll('.edit').forEach(button => {
+        button.addEventListener('click', editSubscription);
+      });
+
+      document.querySelectorAll('.delete').forEach(button => {
+        button.addEventListener('click', deleteSubscription);
+      });
+
+      document.querySelectorAll('.toggle-status').forEach(button => {
+        button.addEventListener('click', toggleSubscriptionStatus);
+      });
+
+      document.querySelectorAll('.test-notify').forEach(button => {
+        button.addEventListener('click', testSubscriptionNotification);
+      });
+
+      // Add hover functionality
+      setTimeout(addHoverListeners, 100);
+    }
+
+    // 添加悬停功能
+    function addHoverListeners() {
+      // 计算悬浮提示位置
+      function positionTooltip(element, tooltip) {
+        const rect = element.getBoundingClientRect();
+        const tooltipHeight = 100; // 预估高度
+        const viewportHeight = window.innerHeight;
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+        let top = rect.bottom + scrollTop + 8;
+        let left = rect.left;
+
+        // 如果下方空间不够，显示在上方
+        if (rect.bottom + tooltipHeight > viewportHeight) {
+          top = rect.top + scrollTop - tooltipHeight - 8;
+          tooltip.style.transform = 'translateY(10px)';
+          // 调整箭头位置
+          tooltip.classList.add('tooltip-above');
+        } else {
+          tooltip.style.transform = 'translateY(-10px)';
+          tooltip.classList.remove('tooltip-above');
+        }
+
+        // 确保不超出右边界
+        const maxLeft = window.innerWidth - 320 - 20;
+        if (left > maxLeft) {
+          left = maxLeft;
+        }
+
+        tooltip.style.left = left + 'px';
+        tooltip.style.top = top + 'px';
+      }
+
+      // 备注悬停功能
+      document.querySelectorAll('.notes-text').forEach(notesElement => {
+        const fullNotes = notesElement.getAttribute('data-full-notes');
+        const tooltip = notesElement.parentElement.querySelector('.notes-tooltip');
+
+        if (fullNotes && tooltip) {
+          notesElement.addEventListener('mouseenter', () => {
+            tooltip.textContent = fullNotes;
+            positionTooltip(notesElement, tooltip);
+            tooltip.classList.add('show');
+          });
+
+          notesElement.addEventListener('mouseleave', () => {
+            tooltip.classList.remove('show');
+          });
+
+          // 滚动时隐藏提示
+          window.addEventListener('scroll', () => {
+            if (tooltip.classList.contains('show')) {
+              tooltip.classList.remove('show');
+            }
+          }, { passive: true });
+        }
+      });
+
+      // 通用悬停功能
+      document.querySelectorAll('.hover-text').forEach(hoverElement => {
+        const fullText = hoverElement.getAttribute('data-full-text');
+        const tooltip = hoverElement.parentElement.querySelector('.hover-tooltip');
+
+        if (fullText && tooltip) {
+          hoverElement.addEventListener('mouseenter', () => {
+            tooltip.textContent = fullText;
+            positionTooltip(hoverElement, tooltip);
+            tooltip.classList.add('show');
+          });
+
+          hoverElement.addEventListener('mouseleave', () => {
+            tooltip.classList.remove('show');
+          });
+
+          // 滚动时隐藏提示
+          window.addEventListener('scroll', () => {
+            if (tooltip.classList.contains('show')) {
+              tooltip.classList.remove('show');
+            }
+          }, { passive: true });
+                 }
+       });
+     }
+
+    // Override the original loadSubscriptions function
+    async function loadSubscriptions() {
+      try {
+        // Load lunar display preference
+        const listShowLunar = document.getElementById('listShowLunar');
+        const saved = localStorage.getItem('showLunar');
+        if (saved !== null) {
+          listShowLunar.checked = saved === 'true';
+        } else {
+          listShowLunar.checked = true;
+        }
+
+        const tbody = document.getElementById('subscriptionsBody');
+        tbody.innerHTML = '<tr><td colspan="6" class="text-center py-8"><div class="flex items-center justify-center"><i class="fas fa-spinner fa-spin mr-2 text-indigo-500"></i><span class="text-gray-600">加载中...</span></div></td></tr>';
+
+        const response = await fetch('/api/subscriptions');
+        const data = await response.json();
+
+        allSubscriptions = data;
+        filteredSubscriptions = [...data];
+
+        if (data.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="6" class="text-center py-12 text-gray-500"><div><i class="fas fa-plus-circle text-4xl mb-4 text-gray-300"></i><p class="text-lg">还没有订阅数据</p><p class="text-sm">点击"添加订阅"按钮创建您的第一个订阅</p></div></td></tr>';
+          updateStatistics([]);
+          return;
+        }
+
+        displaySubscriptions(filteredSubscriptions);
+        updateStatistics(filteredSubscriptions);
+
+        // Add lunar toggle event listener
+        listShowLunar.removeEventListener('change', handleListLunarToggle);
+        listShowLunar.addEventListener('change', handleListLunarToggle);
+      } catch (error) {
+        console.error('加载订阅失败:', error);
+        const tbody = document.getElementById('subscriptionsBody');
+        tbody.innerHTML = '<tr><td colspan="6" class="text-center py-8 text-red-500"><div><i class="fas fa-exclamation-circle text-4xl mb-4"></i><p class="text-lg">加载失败</p><p class="text-sm">请刷新页面重试</p></div></td></tr>';
+        showToast('加载订阅列表失败', 'error');
+      }
+    }
+
+    // Enhanced lunar toggle handler
+    function handleListLunarToggle() {
+      const listShowLunar = document.getElementById('listShowLunar');
+      localStorage.setItem('showLunar', listShowLunar.checked);
+      displaySubscriptions(filteredSubscriptions);
+    }
+
+    // Setup floating action button
+    function setupFloatingActionButton() {
+      const floatingBtn = document.getElementById('floatingAddBtn');
+      const addBtn = document.getElementById('addSubscriptionBtn');
+      
+      if (floatingBtn && addBtn) {
+        floatingBtn.addEventListener('click', () => {
+          addBtn.click();
+        });
+      }
+    }
+
+    // Initialize everything
+    window.addEventListener('load', () => {
+      loadSubscriptions();
+      setupSearch();
+      setupFloatingActionButton();
+      
+      // Add animation to stats cards
+      setTimeout(() => {
+        document.querySelectorAll('.stats-card').forEach((card, index) => {
+          card.style.opacity = '0';
+          card.style.transform = 'translateY(20px)';
+          setTimeout(() => {
+            card.style.transition = 'all 0.6s ease';
+            card.style.opacity = '1';
+            card.style.transform = 'translateY(0)';
+          }, index * 100);
+        });
+      }, 200);
+    });
   </script>
 </body>
 </html>
@@ -1654,7 +2608,7 @@ const configPage = `
       height: 40px;
       border-radius: 8px;
       display: flex;
-      align-items: center;
+      align-items: center;b
       justify-content: center;
       margin-right: 0.75rem;
       color: white;
