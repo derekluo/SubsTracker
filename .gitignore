@@ -21,6 +21,7 @@ coverage/
 
 # Wrangler
 wrangler.log
+wrangler.toml
 
 # Cursor/IDE
 .cursorindexingignore
